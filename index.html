@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Чарник — Тёмное фэнтези</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4a2e0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Чарник">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Marck+Script&family=MedievalSharp&display=swap');
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'IM Fell English SC', Georgia, serif;
+    color: #2b1d0e;
+    background-color: #1a120b;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(120, 80, 40, 0.25) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(80, 50, 20, 0.3) 0%, transparent 50%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 2px, transparent 2px, transparent 4px);
+    line-height: 1.5;
+    font-size: 16px;
+    min-height: 100vh;
+  }
+
+  body { padding: 12px 8px 40px; }
+
+  .sheet {
+    max-width: 720px;
+    margin: 0 auto;
+    background-color: #f3e6c8;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(180, 140, 80, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom right, rgba(120, 80, 40, 0.15) 0%, transparent 60%);
+    padding: 20px 14px 30px;
+    border: 2px solid #6b4a1e;
+    outline: 1px solid #a87c3a;
+    outline-offset: 3px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.7), inset 0 0 60px rgba(120, 80, 30, 0.15);
+    position: relative;
+  }
+
+  h1 {
+    font-family: 'MedievalSharp', serif;
+    text-align: center;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: #4a2e0a;
+    text-shadow: 1px 1px 0 #d9b97a;
+    margin: 0 0 4px;
+    padding-bottom: 10px;
+    border-bottom: 2px double #8a5a1e;
+  }
+  .subtitle {
+    text-align: center;
+    font-family: 'Marck Script', cursive;
+    font-size: 16px;
+    color: #6b4a1e;
+    margin: 0 0 20px;
+  }
+
+  h2 {
+    font-family: 'MedievalSharp', serif;
+    font-size: 17px;
+    color: #5a3410;
+    margin: 22px 0 10px;
+    padding: 6px 0 6px 30px;
+    border-bottom: 1px solid #b58a4a;
+    position: relative;
+    letter-spacing: 1px;
+  }
+  h2::before {
+    content: '⚔';
+    position: absolute;
+    left: 4px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #8a5a1e;
+  }
+
+  .row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  label.fld {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6b4a1e;
+    margin-bottom: 4px;
+  }
+  input[type="text"], input[type="number"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #2b1d0e;
+    background: rgba(255, 250, 235, 0.7);
+    border: 1px solid #b58a4a;
+    border-radius: 6px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  input:focus, textarea:focus { border-color: #8a5a1e; background: #fffaf0; }
+
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none; margin: 0;
+  }
+  input[type=number] { -moz-appearance: textfield; }
+
+  textarea { resize: vertical; min-height: 90px; line-height: 1.4; }
+
+  .counter {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    background: rgba(255, 250, 235, 0.55);
+    border: 1px solid #b58a4a;
+    border-radius: 8px;
+    padding: 4px;
+  }
+  .counter button {
+    flex: 0 0 auto;
+    min-width: 56px;
+    padding: 0 10px;
+    height: 46px;
+    font-size: 15px;
+    font-family: inherit;
+    background: linear-gradient(180deg, #8a5a1e, #5a3410);
+    color: #f3e6c8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+  }
+  .counter button:active { transform: translateY(1px); filter: brightness(1.2); }
+  .counter input {
+    flex: 1;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    color: #2b1d0e;
+    padding: 4px;
+    min-width: 0;
+  }
+
+  .lvl-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 250, 235, 0.55);
+    border: 1px solid #b58a4a;
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  .lvl-row label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6b4a1e;
+    white-space: nowrap;
+  }
+  .lvl-row input {
+    flex: 1;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    color: #2b1d0e;
+    padding: 4px;
+    min-width: 0;
+  }
+
+  .stat {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 250, 235, 0.5);
+    border: 1px solid #b58a4a;
+    border-left: 4px solid #8a5a1e;
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .stat-name {
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #4a2e0a;
+  }
+  .stat-max {
+    font-size: 11px;
+    color: #8a5a1e;
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .stat-controls {
+    display: flex;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .stat-controls button {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    font-family: inherit;
+    background: linear-gradient(180deg, #8a5a1e, #5a3410);
+    color: #f3e6c8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .stat-controls button:active { filter: brightness(1.2); }
+  .stat-controls input {
+    width: 60px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #b58a4a;
+    border-radius: 6px;
+    background: rgba(255,250,235,0.8);
+    color: #2b1d0e;
+  }
+
+  .big-counter {
+    background: rgba(255, 250, 235, 0.6);
+    border: 1px solid #b58a4a;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+  }
+  .big-counter .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #6b4a1e;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .pool-row {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    background: rgba(255, 250, 235, 0.55);
+    border: 1px solid #b58a4a;
+    border-radius: 8px;
+    padding: 4px;
+  }
+  .pool-row button {
+    flex: 0 0 46px;
+    height: 46px;
+    font-size: 22px;
+    font-family: inherit;
+    background: linear-gradient(180deg, #8a5a1e, #5a3410);
+    color: #f3e6c8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .pool-row button:active { transform: translateY(1px); filter: brightness(1.2); }
+  .pool-row .pool-input {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .pool-row .pool-input input {
+    width: 70px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    color: #2b1d0e;
+    padding: 4px;
+    border-bottom: 2px solid #b58a4a;
+  }
+  .pool-row .pool-input .sep {
+    color: #8a5a1e;
+    font-size: 20px;
+  }
+  .pool-row .pool-input .max-val {
+    min-width: 40px;
+    text-align: center;
+    color: #5a3410;
+  }
+
+  .inv-item {
+    display: grid;
+    grid-template-columns: 1fr 60px 70px 70px auto auto;
+    gap: 6px;
+    align-items: center;
+    background: rgba(255, 250, 235, 0.55);
+    border: 1px solid #b58a4a;
+    border-left: 4px solid #8a5a1e;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .inv-item .inv-field {
+    padding: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #2b1d0e;
+    background: rgba(255,250,235,0.7);
+    border: 1px solid #c9a86a;
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+  }
+  .inv-item .inv-name { font-weight: bold; }
+  .inv-controls {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .inv-controls button {
+    width: 38px;
+    height: 40px;
+    font-size: 18px;
+    font-family: inherit;
+    background: linear-gradient(180deg, #8a5a1e, #5a3410);
+    color: #f3e6c8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .inv-controls button:active { filter: brightness(1.2); }
+  .inv-controls input {
+    width: 52px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid #b58a4a;
+    border-radius: 6px;
+    background: rgba(255,250,235,0.8);
+    color: #2b1d0e;
+    height: 40px;
+    padding: 0 4px;
+  }
+  .inv-del {
+    width: 40px !important;
+    height: 40px;
+    background: linear-gradient(180deg, #a83a3a, #6a1a1a) !important;
+    font-size: 18px !important;
+    border: none;
+    border-radius: 6px;
+    color: #f3e6c8;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .skill-item {
+    display: grid;
+    grid-template-columns: 1fr 70px 70px 90px auto;
+    gap: 6px;
+    align-items: center;
+    background: rgba(255, 250, 235, 0.55);
+    border: 1px solid #b58a4a;
+    border-left: 4px solid #6a3a8a;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+  .skill-item .skill-field {
+    padding: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #2b1d0e;
+    background: rgba(255,250,235,0.7);
+    border: 1px solid #c9a86a;
+    border-radius: 6px;
+    outline: none;
+    width: 100%;
+  }
+  .skill-item .skill-name { font-weight: bold; }
+  .skill-del {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(180deg, #a83a3a, #6a1a1a);
+    font-size: 18px;
+    border: none;
+    border-radius: 6px;
+    color: #f3e6c8;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    font-family: 'MedievalSharp', serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: #f3e6c8;
+    background: linear-gradient(180deg, #6b4a1e, #4a2e0a);
+    border: 1px solid #3a2208;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .btn:active { filter: brightness(1.2); }
+  .btn.secondary { background: linear-gradient(180deg, #8a5a1e, #5a3410); }
+  .btn.danger { background: linear-gradient(180deg, #a83a3a, #6a1a1a); }
+  .btn.mini { padding: 10px; font-size: 14px; }
+
+  .btn-row2 { display: flex; gap: 8px; }
+  .btn-row2 .btn { flex: 1; }
+
+  .status {
+    text-align: center;
+    padding: 10px;
+    color: #2a6a2a;
+    font-size: 14px;
+    min-height: 20px;
+    font-style: italic;
+  }
+  .status.warn { color: #7a1a1a; }
+
+  .lvl-info {
+    text-align: center;
+    font-size: 13px;
+    color: #4a2e0a;
+    margin: 6px 0 8px;
+  }
+  .lvl-info strong { font-size: 15px; }
+
+  .stat-points-info {
+    text-align: center;
+    font-size: 13px;
+    color: #5a3410;
+    margin: 4px 0 10px;
+    padding: 6px;
+    background: rgba(255, 220, 150, 0.4);
+    border-radius: 6px;
+    border: 1px dashed #b58a4a;
+  }
+  .stat-points-info strong { color: #8a3a1e; font-size: 16px; }
+
+  .divider {
+    text-align: center;
+    margin: 18px 0;
+    color: #8a5a1e;
+    font-size: 14px;
+    letter-spacing: 6px;
+  }
+
+  .empty-hint {
+    color: #8a5a1e;
+    padding: 12px;
+    text-align: center;
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 100;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: #f3e6c8;
+    border: 2px solid #6b4a1e;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    color: #2b1d0e;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h3 { font-family: 'MedievalSharp', serif; margin: 0 0 12px; color: #4a2e0a; }
+  .modal p { margin: 6px 0; font-size: 15px; }
+  .modal .btn-row { display: flex; gap: 8px; margin-top: 14px; }
+  .modal .btn-row .btn { flex: 1; margin: 0; }
+
+  @media (max-width: 600px) {
+    .inv-item {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "name name"
+        "rank cost"
+        "fill fill"
+        "qty del";
+    }
+    .inv-item .inv-name { grid-area: name; }
+    .inv-item .inv-rank { grid-area: rank; }
+    .inv-item .inv-cost { grid-area: cost; }
+    .inv-item .inv-fill { grid-area: fill; }
+    .inv-item .inv-controls { grid-area: qty; justify-content: flex-start; }
+    .inv-item .inv-del { grid-area: del; justify-self: end; }
+
+    .skill-item {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "name name"
+        "rank lvl"
+        "fill del";
+    }
+    .skill-item .skill-name { grid-area: name; }
+    .skill-item .skill-rank { grid-area: rank; }
+    .skill-item .skill-lvl { grid-area: lvl; }
+    .skill-item .skill-fill { grid-area: fill; }
+    .skill-item .skill-del { grid-area: del; justify-self: end; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <h1>Лист персонажа</h1>
+  <p class="subtitle">Тёмное фэнтези · Гоблин F-ранга</p>
+
+  <div class="row2">
+    <div>
+      <label class="fld">Имя</label>
+      <input type="text" id="name" autocomplete="off">
+    </div>
+    <div>
+      <label class="fld">Раса</label>
+      <input type="text" id="race" value="Гоблин" autocomplete="off">
+    </div>
+  </div>
+  <div class="row2">
+    <div>
+      <label class="fld">Возраст</label>
+      <input type="text" id="age" autocomplete="off">
+    </div>
+    <div>
+      <label class="fld">Звание</label>
+      <input type="text" id="title" autocomplete="off">
+    </div>
+  </div>
+
+  <h2>Уровень</h2>
+  <div class="lvl-row">
+    <label>Уровень</label>
+    <input type="number" id="lvl" inputmode="numeric" min="0" value="0">
+  </div>
+  <div class="lvl-info" id="lvlInfo"></div>
+  <button type="button" class="btn secondary" id="btnLevelUp">⬆ Повысить уровень за ОС</button>
+
+  <h2>Здоровье и мана</h2>
+  <div class="big-counter">
+    <div class="label">Здоровье (HP)</div>
+    <div class="pool-row" data-pool="hp">
+      <button type="button" data-act="dec">−</button>
+      <div class="pool-input">
+        <input type="number" id="hp" inputmode="numeric" min="0" value="0">
+        <span class="sep">/</span>
+        <span class="max-val" id="hpMax">0</span>
+      </div>
+      <button type="button" data-act="inc">+</button>
+    </div>
+  </div>
+  <div class="big-counter">
+    <div class="label">Мана</div>
+    <div class="pool-row" data-pool="mana">
+      <button type="button" data-act="dec">−</button>
+      <div class="pool-input">
+        <input type="number" id="mana" inputmode="numeric" min="0" value="0">
+        <span class="sep">/</span>
+        <span class="max-val" id="manaMax">0</span>
+      </div>
+      <button type="button" data-act="inc">+</button>
+    </div>
+  </div>
+
+  <h2>Очки системы (ОС)</h2>
+  <div class="big-counter">
+    <div class="counter" data-counter="os">
+      <button type="button" data-act="dec100">−100</button>
+      <button type="button" data-act="dec10">−10</button>
+      <input type="number" id="os" inputmode="numeric" min="0" value="0">
+      <button type="button" data-act="inc10">+10</button>
+      <button type="button" data-act="inc100">+100</button>
+    </div>
+  </div>
+
+  <h2>Характеристики</h2>
+  <div class="stat-points-info" id="statPointsInfo"></div>
+  <div id="stats"></div>
+
+  <h2>Навыки</h2>
+  <div id="skills"></div>
+  <button type="button" class="btn secondary" id="btnAddSkill">➕ Добавить навык</button>
+
+  <h2>Состояния</h2>
+  <textarea id="states" placeholder="Отравлен, проклят, вдохновлён, испуган..."></textarea>
+
+  <h2>Травмы</h2>
+  <textarea id="injuries" placeholder="Раны, увечья, шрамы, последствия..."></textarea>
+
+  <h2>Способности</h2>
+  <textarea id="abilities" placeholder="Умения, приёмы, заклинания, таланты..."></textarea>
+
+  <h2>Инвентарь</h2>
+  <div id="inventory"></div>
+  <button type="button" class="btn secondary" id="btnAddItem">➕ Добавить предмет</button>
+
+  <h2>Заметки</h2>
+  <textarea id="notes" placeholder="Свободные заметки, цели, планы, зацепки сюжета..."></textarea>
+
+  <div class="divider">❧ ❧ ❧</div>
+
+  <div class="status" id="status"></div>
+
+  <button type="button" class="btn secondary" id="btnSaveFile">💾 Сохранить в файл</button>
+  <button type="button" class="btn danger" id="btnReset">🗑 Сбросить всё</button>
+
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <h3 id="modalTitle">Проверка</h3>
+    <div id="modalText"></div>
+    <div class="btn-row" id="modalBtns"></div>
+  </div>
+</div>
+
+<script id="charData" type="application/json">null</script>
+
+<script>
+(function() {
+  'use strict';
+
+  const THRESHOLDS = [5, 10, 15, 20, 30, 50, 75, 100, 250, 500, 750, 1000];
+  const DEATH_CHANCE = [0, 5, 10, 15, 20, 30, 40, 50, 60, 70, 80, 90];
+
+  const LIMIT_COST = {
+    str:  [100, 300, 500, 1000, 1000],
+    dex:  [100, 300, 500, 1000, 1000],
+    per:  [80,  300, 500, 1000, 1000],
+    vit:  [50,  200, 500, 1000, 1000],
+    int:  [80,  300, 500, 1000, 1000],
+    luck: [1000,1000,1000,1000, 1000],
+    wis:  [50,  300, 500, 1000, 1000],
+    cha:  [80,  300, 500, 1000, 1000],
+  };
+
+  const STATS = [
+    { id: 'str',  name: 'Сила' },
+    { id: 'dex',  name: 'Ловкость' },
+    { id: 'per',  name: 'Восприятие' },
+    { id: 'vit',  name: 'Живучесть' },
+    { id: 'int',  name: 'Интеллект' },
+    { id: 'luck', name: 'Удача' },
+    { id: 'wis',  name: 'Мудрость' },
+    { id: 'cha',  name: 'Харизма' },
+  ];
+
+  const SAVE_KEY = 'dark_fantasy_char_v7';
+  const START_STAT_POINTS = 12;
+
+  function levelCost(lvl) {
+    if (lvl < 5)  return 10;
+    if (lvl < 10) return 25;
+    if (lvl < 15) return 50;
+    if (lvl < 20) return 100;
+    if (lvl < 25) return 200;
+    if (lvl < 30) return 400;
+    if (lvl < 35) return 800;
+    if (lvl < 40) return 1500;
+    if (lvl < 45) return 3000;
+    return 6000;
+  }
+
+  function maxHp()   { return state.stats.vit.value * 10; }
+  function maxMana() { return state.stats.int.value * 10; }
+
+  function defaultState() {
+    const stats = {};
+    STATS.forEach(s => stats[s.id] = { value: 0, limit: 0 });
+    return {
+      name: '', race: 'Гоблин', age: '', title: '',
+      lvl: 0,
+      hp: 0, mana: 0, os: 0,
+      statPoints: START_STAT_POINTS,
+      stats: stats,
+      states: '', injuries: '', abilities: '',
+      notes: '',
+      inventory: [],
+      skills: [],
+    };
+  }
+
+  let state = defaultState();
+
+  const $ = id => document.getElementById(id);
+
+  function save() {
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    } catch (e) {
+      console.warn('save error', e);
+    }
+  }
+
+  function loadEmbedded() {
+    const tag = $('charData');
+    if (!tag) return null;
+    const raw = tag.textContent.trim();
+    if (!raw || raw === 'null') return null;
+    try {
+      const data = JSON.parse(raw);
+      if (data && typeof data === 'object') return data;
+    } catch (e) {
+      console.warn('embedded parse error', e);
+    }
+    return null;
+  }
+
+  function applyData(data) {
+    const fresh = defaultState();
+
+    ['name','race','age','title','states','injuries','abilities','notes'].forEach(k => {
+      if (typeof data[k] === 'string') fresh[k] = data[k];
+    });
+
+    if (typeof data.lvl === 'number' && !isNaN(data.lvl)) {
+      fresh.lvl = Math.max(0, data.lvl);
+    }
+    ['hp','mana','os'].forEach(k => {
+      if (typeof data[k] === 'number' && !isNaN(data[k])) fresh[k] = data[k];
+    });
+    if (typeof data.statPoints === 'number' && !isNaN(data.statPoints)) {
+      fresh.statPoints = Math.max(0, data.statPoints);
+    }
+
+    if (data.stats && typeof data.stats === 'object') {
+      STATS.forEach(s => {
+        const d = data.stats[s.id];
+        if (d && typeof d === 'object') {
+          fresh.stats[s.id].value = Math.max(0, parseInt(d.value) || 0);
+          fresh.stats[s.id].limit = Math.max(0, Math.min(THRESHOLDS.length, parseInt(d.limit) || 0));
+        }
+      });
+    }
+
+    if (Array.isArray(data.inventory)) {
+      fresh.inventory = data.inventory
+        .filter(it => it && typeof it === 'object')
+        .map(it => ({
+          name: String(it.name || ''),
+          rank: String(it.rank || ''),
+          cost: String(it.cost || ''),
+          fill: String(it.fill || ''),
+          qty: Math.max(0, parseInt(it.qty) || 0),
+        }));
+    }
+
+    if (Array.isArray(data.skills)) {
+      fresh.skills = data.skills
+        .filter(it => it && typeof it === 'object')
+        .map(it => ({
+          name: String(it.name || ''),
+          rank: String(it.rank || ''),
+          lvl: String(it.lvl || ''),
+          fill: String(it.fill || ''),
+        }));
+    }
+
+    state = fresh;
+    state.hp = Math.max(0, Math.min(state.hp, maxHp()));
+    state.mana = Math.max(0, Math.min(state.mana, maxMana()));
+  }
+
+  function load() {
+    const embedded = loadEmbedded();
+    if (embedded) {
+      applyData(embedded);
+      return;
+    }
+    let raw = null;
+    try { raw = localStorage.getItem(SAVE_KEY); } catch (e) {}
+    if (!raw) return;
+    try {
+      const data = JSON.parse(raw);
+      if (data && typeof data === 'object') applyData(data);
+    } catch (e) {
+      console.warn('load error', e);
+    }
+  }
+
+  let fileHandle = null;
+
+  async function saveToFile() {
+    if (!window.showSaveFilePicker) {
+      flash('❌ Браузер не поддерживает. Используй Chrome/Edge/Opera.', true);
+      return;
+    }
+    try {
+      if (!fileHandle) {
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: 'Чарник интерактивный.html',
+          types: [{
+            description: 'HTML файл',
+            accept: { 'text/html': ['.html'] },
+          }],
+        });
+      }
+      const html = buildHtmlWithData();
+      const writable = await fileHandle.createWritable();
+      await writable.write(html);
+      await writable.close();
+      flash('💾 Сохранено в файл');
+    } catch (e) {
+      if (e && e.name === 'AbortError') return;
+      console.warn('save file error', e);
+      flash('❌ Не удалось сохранить файл', true);
+    }
+  }
+
+  function buildHtmlWithData() {
+    const dataJson = JSON.stringify(state);
+    const clone = document.documentElement.cloneNode(true);
+    const dataTag = clone.querySelector('#charData');
+    if (dataTag) {
+      dataTag.textContent = dataJson;
+    }
+    const idsToClean = ['stats', 'skills', 'inventory'];
+    idsToClean.forEach(id => {
+      const el = clone.querySelector('#' + id);
+      if (el) el.innerHTML = '';
+    });
+    const doctype = '<!DOCTYPE html>\n';
+    return doctype + clone.outerHTML;
+  }
+
+  function flash(msg, warn) {
+    const s = $('status');
+    s.textContent = msg;
+    s.className = 'status' + (warn ? ' warn' : '');
+    clearTimeout(flash._t);
+    flash._t = setTimeout(() => { s.textContent = ''; s.className = 'status'; }, 2500);
+  }
+
+  function renderAll() {
+    $('name').value = state.name;
+    $('race').value = state.race;
+    $('age').value = state.age;
+    $('title').value = state.title;
+    $('lvl').value = state.lvl;
+    $('os').value = state.os;
+    $('states').value = state.states;
+    $('injuries').value = state.injuries;
+    $('abilities').value = state.abilities;
+    $('notes').value = state.notes;
+
+    renderStats();
+    renderSkills();
+    renderInventory();
+    renderLvlInfo();
+    renderStatPoints();
+    renderPools();
+  }
+
+  function renderPools() {
+    const mHp = maxHp();
+    const mMana = maxMana();
+
+    if (state.hp > mHp) state.hp = mHp;
+    if (state.hp < 0) state.hp = 0;
+    if (state.mana > mMana) state.mana = mMana;
+    if (state.mana < 0) state.mana = 0;
+
+    $('hp').value = state.hp;
+    $('hpMax').textContent = mHp;
+    $('mana').value = state.mana;
+    $('manaMax').textContent = mMana;
+  }
+
+  function renderStatPoints() {
+    const el = $('statPointsInfo');
+    if (state.statPoints > 0) {
+      el.innerHTML = 'Свободных очков характеристик: <strong>' + state.statPoints + '</strong>';
+    } else {
+      el.innerHTML = 'Свободных очков нет — повышай уровень.';
+    }
+  }
+
+  function renderStats() {
+    const box = $('stats');
+    box.innerHTML = '';
+
+    STATS.forEach(s => {
+      const st = state.stats[s.id];
+      const nextTh = THRESHOLDS[st.limit];
+      const maxNow = (nextTh !== undefined) ? nextTh : '∞';
+
+      const row = document.createElement('div');
+      row.className = 'stat';
+
+      const info = document.createElement('div');
+      info.innerHTML =
+        '<div class="stat-name">' + s.name + '</div>' +
+        '<div class="stat-max">Предел ' + st.limit + ' · макс: ' + maxNow + '</div>';
+
+      const ctr = document.createElement('div');
+      ctr.className = 'stat-controls';
+
+      const btnMinus = document.createElement('button');
+      btnMinus.type = 'button';
+      btnMinus.textContent = '−';
+      btnMinus.addEventListener('click', () => changeStat(s.id, -1));
+
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.inputMode = 'numeric';
+      inp.min = '0';
+      inp.value = st.value;
+      inp.addEventListener('change', () => setStat(s.id, inp.value));
+      inp.addEventListener('blur', () => setStat(s.id, inp.value));
+
+      const btnPlus = document.createElement('button');
+      btnPlus.type = 'button';
+      btnPlus.textContent = '+';
+      btnPlus.addEventListener('click', () => changeStat(s.id, 1));
+
+      ctr.appendChild(btnMinus);
+      ctr.appendChild(inp);
+      ctr.appendChild(btnPlus);
+
+      row.appendChild(info);
+      row.appendChild(ctr);
+      box.appendChild(row);
+    });
+  }
+
+  function renderInventory() {
+    const box = $('inventory');
+    box.innerHTML = '';
+
+    if (!state.inventory.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-hint';
+      empty.textContent = 'Пусто';
+      box.appendChild(empty);
+      return;
+    }
+
+    state.inventory.forEach((item, i) => {
+      const row = document.createElement('div');
+      row.className = 'inv-item';
+
+      const nameInp = document.createElement('input');
+      nameInp.type = 'text';
+      nameInp.className = 'inv-field inv-name';
+      nameInp.value = item.name;
+      nameInp.placeholder = 'Название';
+      nameInp.autocomplete = 'off';
+      nameInp.addEventListener('input', () => { item.name = nameInp.value; save(); });
+
+      const rankInp = document.createElement('input');
+      rankInp.type = 'text';
+      rankInp.className = 'inv-field inv-rank';
+      rankInp.value = item.rank;
+      rankInp.placeholder = 'Ранг';
+      rankInp.autocomplete = 'off';
+      rankInp.addEventListener('input', () => { item.rank = rankInp.value; save(); });
+
+      const costInp = document.createElement('input');
+      costInp.type = 'text';
+      costInp.className = 'inv-field inv-cost';
+      costInp.value = item.cost;
+      costInp.placeholder = 'Цена';
+      costInp.autocomplete = 'off';
+      costInp.addEventListener('input', () => { item.cost = costInp.value; save(); });
+
+      const fillInp = document.createElement('input');
+      fillInp.type = 'text';
+      fillInp.className = 'inv-field inv-fill';
+      fillInp.value = item.fill;
+      fillInp.placeholder = '0/10';
+      fillInp.autocomplete = 'off';
+      fillInp.addEventListener('input', () => { item.fill = fillInp.value; save(); });
+
+      const ctr = document.createElement('div');
+      ctr.className = 'inv-controls';
+
+      const btnMinus = document.createElement('button');
+      btnMinus.type = 'button';
+      btnMinus.textContent = '−';
+      btnMinus.addEventListener('click', () => changeItemQty(i, -1));
+
+      const qtyInp = document.createElement('input');
+      qtyInp.type = 'number';
+      qtyInp.inputMode = 'numeric';
+      qtyInp.min = '0';
+      qtyInp.value = item.qty;
+      qtyInp.addEventListener('change', () => setItemQty(i, qtyInp.value));
+      qtyInp.addEventListener('blur', () => setItemQty(i, qtyInp.value));
+
+      const btnPlus = document.createElement('button');
+      btnPlus.type = 'button';
+      btnPlus.textContent = '+';
+      btnPlus.addEventListener('click', () => changeItemQty(i, 1));
+
+      ctr.appendChild(btnMinus);
+      ctr.appendChild(qtyInp);
+      ctr.appendChild(btnPlus);
+
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'inv-del';
+      del.textContent = '✕';
+      del.addEventListener('click', () => removeItem(i));
+
+      row.appendChild(nameInp);
+      row.appendChild(rankInp);
+      row.appendChild(costInp);
+      row.appendChild(fillInp);
+      row.appendChild(ctr);
+      row.appendChild(del);
+      box.appendChild(row);
+    });
+  }
+
+  function renderSkills() {
+    const box = $('skills');
+    box.innerHTML = '';
+
+    if (!state.skills.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-hint';
+      empty.textContent = 'Нет навыков';
+      box.appendChild(empty);
+      return;
+    }
+
+    state.skills.forEach((skill, i) => {
+      const row = document.createElement('div');
+      row.className = 'skill-item';
+
+      const nameInp = document.createElement('input');
+      nameInp.type = 'text';
+      nameInp.className = 'skill-field skill-name';
+      nameInp.value = skill.name;
+      nameInp.placeholder = 'Название';
+      nameInp.autocomplete = 'off';
+      nameInp.addEventListener('input', () => { skill.name = nameInp.value; save(); });
+
+      const rankInp = document.createElement('input');
+      rankInp.type = 'text';
+      rankInp.className = 'skill-field skill-rank';
+      rankInp.value = skill.rank;
+      rankInp.placeholder = 'Ранг';
+      rankInp.autocomplete = 'off';
+      rankInp.addEventListener('input', () => { skill.rank = rankInp.value; save(); });
+
+      const lvlInp = document.createElement('input');
+      lvlInp.type = 'text';
+      lvlInp.className = 'skill-field skill-lvl';
+      lvlInp.value = skill.lvl;
+      lvlInp.placeholder = 'Уровень';
+      lvlInp.autocomplete = 'off';
+      lvlInp.addEventListener('input', () => { skill.lvl = lvlInp.value; save(); });
+
+      const fillInp = document.createElement('input');
+      fillInp.type = 'text';
+      fillInp.className = 'skill-field skill-fill';
+      fillInp.value = skill.fill;
+      fillInp.placeholder = '0/10';
+      fillInp.autocomplete = 'off';
+      fillInp.addEventListener('input', () => { skill.fill = fillInp.value; save(); });
+
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'skill-del';
+      del.textContent = '✕';
+      del.addEventListener('click', () => removeSkill(i));
+
+      row.appendChild(nameInp);
+      row.appendChild(rankInp);
+      row.appendChild(lvlInp);
+      row.appendChild(fillInp);
+      row.appendChild(del);
+      box.appendChild(row);
+    });
+  }
+
+  function renderLvlInfo() {
+    const cost = levelCost(state.lvl);
+    $('lvlInfo').innerHTML =
+      'Следующий уровень: <strong>' + (state.lvl + 1) + '</strong>' +
+      ' · нужно <strong>' + cost + ' ОС</strong>';
+  }
+
+  function changeHp(step) {
+    const m = maxHp();
+    state.hp = Math.max(0, Math.min(m, state.hp + step));
+    $('hp').value = state.hp;
+    if (state.hp === 0 && m > 0) flash('💀 Персонаж без сознания (HP = 0)', true);
+    save();
+  }
+
+  function changeMana(step) {
+    const m = maxMana();
+    state.mana = Math.max(0, Math.min(m, state.mana + step));
+    $('mana').value = state.mana;
+    save();
+  }
+
+  function changeOs(step) {
+    state.os = Math.max(0, state.os + step);
+    $('os').value = state.os;
+    renderLvlInfo();
+    save();
+  }
+
+  function changeStat(id, step) {
+    const st = state.stats[id];
+    if (!st) return;
+
+    if (step > 0) {
+      const maxNow = THRESHOLDS[st.limit];
+
+      if (maxNow !== undefined && st.value >= maxNow) {
+        openLimitModal(id);
+        return;
+      }
+
+      if (state.statPoints <= 0) {
+        flash('❌ Нет свободных очков характеристик', true);
+        return;
+      }
+
+      state.statPoints -= 1;
+      st.value = st.value + 1;
+      renderStatPoints();
+    } else {
+      st.value = Math.max(0, st.value + step);
+    }
+
+    renderStats();
+    renderPools();
+    save();
+  }
+
+  function setStat(id, raw) {
+    const st = state.stats[id];
+    if (!st) return;
+
+    let nv = parseInt(raw, 10);
+    if (isNaN(nv)) nv = 0;
+    nv = Math.max(0, nv);
+
+    const maxNow = THRESHOLDS[st.limit];
+    if (maxNow !== undefined && nv > maxNow) {
+      st.value = maxNow;
+      renderStats();
+      renderPools();
+      save();
+      openLimitModal(id);
+      return;
+    }
+
+    st.value = nv;
+    renderStats();
+    renderPools();
+    save();
+  }
+
+  function openModal(title, html, buttons) {
+    $('modalTitle').textContent = title;
+    $('modalText').innerHTML = html;
+    const btns = $('modalBtns');
+    btns.innerHTML = '';
+    (buttons || []).forEach(b => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn ' + (b.cls || '');
+      btn.textContent = b.text;
+      btn.addEventListener('click', b.onClick);
+      btns.appendChild(btn);
+    });
+    $('modalBg').classList.add('show');
+  }
+
+  function closeModal() {
+    $('modalBg').classList.remove('show');
+  }
+
+  function openLimitModal(id) {
+    const st = state.stats[id];
+    const statName = STATS.find(s => s.id === id).name;
+
+    const currentThreshold = THRESHOLDS[st.limit];
+    const nextLimit = st.limit + 1;
+    const nextThreshold = THRESHOLDS[nextLimit];
+
+    if (currentThreshold === undefined) {
+      flash('Достигнут абсолютный максимум', true);
+      closeModal();
+      return;
+    }
+
+    const deathChance = DEATH_CHANCE[Math.min(nextLimit, DEATH_CHANCE.length - 1)];
+    const costs = LIMIT_COST[id] || [1000,1000,1000,1000,1000];
+    const costIdx = Math.min(st.limit, costs.length - 1);
+    const cost = costs[costIdx];
+
+    const html =
+      '<p>Ты упёрся в <strong>предел ' + st.limit + '</strong> (максимум ' + currentThreshold + ').</p>' +
+      '<p>Преодоление откроет <strong>предел ' + nextLimit + '</strong>' +
+      (nextThreshold !== undefined ? ' (максимум ' + nextThreshold + ')' : '') + '.</p>' +
+      '<p>Стоимость: <strong>' + cost + ' ОС</strong>.</p>' +
+      '<p>Шанс смерти: <strong>' + deathChance + '%</strong>.</p>';
+
+    openModal('⚔ Преодоление предела — ' + statName, html, [
+      { text: '✅ Преодолеть', cls: 'secondary', onClick: () => tryPassLimit(id) },
+      { text: 'Отмена', cls: 'danger', onClick: closeModal },
+    ]);
+  }
+
+  function tryPassLimit(id) {
+    const st = state.stats[id];
+    const nextLimit = st.limit + 1;
+
+    if (THRESHOLDS[st.limit] === undefined) {
+      closeModal();
+      flash('Достигнут абсолютный максимум', true);
+      return;
+    }
+
+    const costs = LIMIT_COST[id] || [1000,1000,1000,1000,1000];
+    const costIdx = Math.min(st.limit, costs.length - 1);
+    const cost = costs[costIdx];
+
+    if (state.os < cost) {
+      closeModal();
+      flash('❌ Не хватает ОС (нужно ' + cost + ', у тебя ' + state.os + ')', true);
+      return;
+    }
+
+    state.os -= cost;
+    $('os').value = state.os;
+
+    const deathChance = DEATH_CHANCE[Math.min(nextLimit, DEATH_CHANCE.length - 1)];
+    const roll = Math.floor(Math.random() * 100) + 1;
+    const died = roll <= deathChance;
+
+    closeModal();
+
+    if (died) {
+      openDeathModal(id, roll, deathChance);
+    } else {
+      st.limit = nextLimit;
+      renderStats();
+      renderPools();
+      renderLvlInfo();
+      renderStatPoints();
+      save();
+      flash('✅ Предел преодолён! Бросок ' + roll + ' vs шанс ' + deathChance + '%');
+    }
+  }
+
+  function openDeathModal(id, roll, chance) {
+    const statName = STATS.find(s => s.id === id).name;
+    const html =
+      '<p>Ты пытался преодолеть предел <strong>' + statName + '</strong>.</p>' +
+      '<p>Бросок: <strong>' + roll + '</strong> (шанс смерти ' + chance + '%).</p>' +
+      '<p style="color:#7a1a1a;font-weight:bold;margin-top:12px;font-size:17px;">💀 Персонаж погибает.</p>' +
+      '<p style="font-size:13px;color:#6b4a1e;font-style:italic;">' +
+      'Мастер может решить иначе, но система говорит: всё.</p>';
+
+    openModal('Проверка на выживание провалена', html, [
+      { text: 'Принять судьбу', cls: 'danger', onClick: closeModal },
+    ]);
+  }
+
+  function tryLevelUp() {
+    const cost = levelCost(state.lvl);
+    if (state.os < cost) {
+      flash('❌ Нужно ' + cost + ' ОС (у тебя ' + state.os + ')', true);
+      return;
+    }
+    state.os -= cost;
+    state.lvl += 1;
+    state.statPoints = (state.statPoints || 0) + 1;
+    $('os').value = state.os;
+    $('lvl').value = state.lvl;
+    renderLvlInfo();
+    renderStatPoints();
+    save();
+    flash('⬆ Уровень ' + state.lvl + '! +1 очко характеристик.');
+  }
+
+  function addItem() {
+    const name = prompt('Что положить в инвентарь?');
+    if (name === null) return;
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    state.inventory.push({ name: trimmed, rank: '', cost: '', fill: '', qty: 1 });
+    renderInventory();
+    save();
+  }
+
+  function removeItem(i) {
+    state.inventory.splice(i, 1);
+    renderInventory();
+    save();
+  }
+
+  function changeItemQty(i, step) {
+    const it = state.inventory[i];
+    if (!it) return;
+    it.qty = Math.max(0, (parseInt(it.qty, 10) || 0) + step);
+    const rows = document.querySelectorAll('#inventory .inv-item');
+    if (rows[i]) {
+      const qtyInp = rows[i].querySelector('.inv-controls input[type="number"]');
+      if (qtyInp) qtyInp.value = it.qty;
+    }
+    save();
+  }
+
+  function setItemQty(i, raw) {
+    const it = state.inventory[i];
+    if (!it) return;
+    let n = parseInt(raw, 10);
+    if (isNaN(n)) n = 0;
+    it.qty = Math.max(0, n);
+    save();
+  }
+
+  function addSkill() {
+    const name = prompt('Название навыка?');
+    if (name === null) return;
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    state.skills.push({ name: trimmed, rank: '', lvl: '1', fill: '0/10' });
+    renderSkills();
+    save();
+  }
+
+  function removeSkill(i) {
+    state.skills.splice(i, 1);
+    renderSkills();
+    save();
+  }
+
+  function resetAll() {
+    if (!confirm('Точно стереть всё? Это необратимо.')) return;
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    state = defaultState();
+    renderAll();
+    flash('🗑 Сброшено');
+  }
+
+  function bindCounters() {
+    const osCounter = document.querySelector('.counter[data-counter="os"]');
+    if (osCounter) {
+      osCounter.querySelectorAll('button[data-act]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const act = btn.dataset.act;
+          if (act === 'dec100') changeOs(-100);
+          else if (act === 'dec10') changeOs(-10);
+          else if (act === 'inc10') changeOs(10);
+          else if (act === 'inc100') changeOs(100);
+        });
+      });
+    }
+
+    document.querySelectorAll('.pool-row').forEach(row => {
+      const pool = row.dataset.pool;
+      row.querySelectorAll('button[data-act]').forEach(btn => {
+        const act = btn.dataset.act;
+        btn.addEventListener('click', () => {
+          const delta = (act === 'inc') ? 1 : -1;
+          if (pool === 'hp') changeHp(delta);
+          else if (pool === 'mana') changeMana(delta);
+        });
+      });
+    });
+
+    const osEl = $('os');
+    osEl.addEventListener('input', () => {
+      let v = parseInt(osEl.value, 10);
+      if (isNaN(v)) v = 0;
+      v = Math.max(0, v);
+      state.os = v;
+      renderLvlInfo();
+      save();
+    });
+    osEl.addEventListener('change', () => {
+      let v = parseInt(osEl.value, 10);
+      if (isNaN(v)) v = 0;
+      v = Math.max(0, v);
+      osEl.value = v;
+      state.os = v;
+      renderLvlInfo();
+      save();
+    });
+
+    const hpEl = $('hp');
+    hpEl.addEventListener('change', () => {
+      let v = parseInt(hpEl.value, 10);
+      if (isNaN(v)) v = 0;
+      const m = maxHp();
+      v = Math.max(0, Math.min(m, v));
+      hpEl.value = v;
+      state.hp = v;
+      save();
+    });
+
+    const manaEl = $('mana');
+    manaEl.addEventListener('change', () => {
+      let v = parseInt(manaEl.value, 10);
+      if (isNaN(v)) v = 0;
+      const m = maxMana();
+      v = Math.max(0, Math.min(m, v));
+      manaEl.value = v;
+      state.mana = v;
+      save();
+    });
+
+    const lvlEl = $('lvl');
+    lvlEl.addEventListener('change', () => {
+      let v = parseInt(lvlEl.value, 10);
+      if (isNaN(v)) v = 0;
+      v = Math.max(0, v);
+      lvlEl.value = v;
+      state.lvl = v;
+      renderLvlInfo();
+      save();
+    });
+  }
+
+  function bindTextFields() {
+    const map = {
+      name: 'name', race: 'race', age: 'age', title: 'title',
+      states: 'states', injuries: 'injuries', abilities: 'abilities',
+      notes: 'notes',
+    };
+    Object.keys(map).forEach(id => {
+      const el = $(id);
+      el.addEventListener('input', () => {
+        state[map[id]] = el.value;
+        save();
+      });
+    });
+  }
+
+  function init() {
+    load();
+    renderAll();
+    bindCounters();
+    bindTextFields();
+
+    $('btnLevelUp').addEventListener('click', tryLevelUp);
+    $('btnAddItem').addEventListener('click', addItem);
+    $('btnAddSkill').addEventListener('click', addSkill);
+    $('btnReset').addEventListener('click', resetAll);
+    $('btnSaveFile').addEventListener('click', saveToFile);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.warn('SW registration failed:', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
